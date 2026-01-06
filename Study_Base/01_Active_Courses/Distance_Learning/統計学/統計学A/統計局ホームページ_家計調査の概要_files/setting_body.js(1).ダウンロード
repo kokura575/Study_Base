@@ -1,0 +1,6 @@
+(function($){
+	
+	//body‚ÉjsŽg—p‚ðŽ¦‚·class‚ð’Ç‰Á
+	$('body').addClass('used_javascript');
+
+})(jQuery);

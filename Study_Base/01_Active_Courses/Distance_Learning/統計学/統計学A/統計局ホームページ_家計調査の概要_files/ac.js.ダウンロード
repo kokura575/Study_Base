@@ -1,0 +1,216 @@
+////文字拡大・縮小//////////////////////////////////////////////////////////////////////////////
+var targetSize = "";	//*文字拡大・縮小対象エリア（ID名）
+var defaultSize = "90%";
+//
+function setSizeCookie(s){
+	var cName = "toukeiSize=";
+	var exp = new Date();
+	exp.setTime(exp.getTime() + 31536000000);
+	document.cookie = cName + s + "; path=/; expires=" + exp.toGMTString();
+}
+//
+function getSizeCookie(){
+	var obj = (targetSize!="")? document.getElementById(targetSize) : document.body;
+	var zoom = "";
+	var cName = "toukeiSize=";
+	var tmpCookie = document.cookie + ";";
+	var s = tmpCookie.indexOf(cName);
+	if (s != -1)
+	{
+		var e = tmpCookie.indexOf(";", s);
+		zoom = tmpCookie.substring(s + cName.length, e);
+		if (zoom != "200%") {
+			obj.style.fontSize = zoom;
+			obj.style.zoom = "100%";
+			obj.style.MozTransform = "scale(1,1)";
+			obj.style.webkitTransform = "scale(1,1)";
+			obj.style.MozTransformOrigin = "0 0";
+			obj.style.webkitTransformOrigin = "0 0";
+		} else {
+			obj.style.fontSize = defaultSize;
+			obj.style.zoom = zoom;
+			obj.style.MozTransform = "scale(2,2)";
+			obj.style.webkitTransform = "scale(2,2)";
+			obj.style.MozTransformOrigin = "0 0";
+			obj.style.webkitTransformOrigin = "0 0";
+		}
+		setFormSize(zoom);
+	} else {
+		obj.style.fontSize = defaultSize;
+		obj.style.zoom = "100%";
+		obj.style.MozTransform = "scale(1,1)";
+		obj.style.webkitTransform = "scale(1,1)";
+		obj.style.MozTransformOrigin = "0 0";
+		obj.style.webkitTransformOrigin = "0 0";
+		setFormSize(defaultSize);
+	}
+}
+//
+function setFontSize(par) {
+	if(!par || par=="") par = defaultSize;
+	var obj = (targetSize!="")? document.getElementById(targetSize) : document.body;
+	if (par != "200%") {
+		obj.style.fontSize = par;
+		obj.style.zoom = "100%";
+		obj.style.MozTransform = "scale(1,1)";
+		obj.style.webkitTransform = "scale(1,1)";
+		obj.style.MozTransformOrigin = "0 0";
+		obj.style.webkitTransformOrigin = "0 0";
+	} else {
+		obj.style.fontSize = defaultSize;
+		obj.style.zoom = par;
+		obj.style.MozTransform = "scale(2,2)";
+		obj.style.webkitTransform = "scale(2,2)";
+		obj.style.MozTransformOrigin = "0 0";
+		obj.style.webkitTransformOrigin = "0 0";
+	}
+	setSizeCookie(par);
+}
+//
+////文字拡大・縮小//////////////////////////////////////////////////////////////////////////////
+
+////色合いの変更　//////////////////////////////////////////////////////////////////////////////
+var targetLINK  = "changecss";	//LINKタグID属性値
+var css_keyword = "color";		//CSSファイル名キーワード（指定のLINKタグが見つからなかった場合に使用）
+var dir_path = "/shared2017/css/color/";	//CSSファイルを置いてあるディレクトリを絶対パスで指定すること
+//
+function setColorCookie(s){
+	var cName = "toukeiColor=";
+	var exp = new Date();
+	exp.setTime(exp.getTime() + 31536000000);
+	document.cookie = cName + s + "; path=/" + "; expires=" + exp.toGMTString();
+}
+//
+function getColorCookie(){
+	//color
+	var p;
+	var pName = "toukeiColor=";
+	var tmpCookie = document.cookie + ";";
+	var s = tmpCookie.indexOf(pName);
+	if (s != -1)
+	{
+		var e = tmpCookie.indexOf(";", s);
+		p = tmpCookie.substring(s + pName.length, e);
+		changeCSS(p);
+		setFormColor(p);
+	}
+}
+//
+function changeCSS(par) {
+	if(!par || par=="") return;
+	//
+	var target = document.getElementById(targetLINK);
+	if(!target) {
+		links = document.getElementsByTagName('link');
+		for(var i=0;i<links.length;i++) {
+			var temp = links[i].href;
+			var chk = temp.indexOf(css_keyword);
+			if(chk!=-1) {
+				target = links[i];
+				break;
+			}
+		}
+	}
+	//
+	if(!target || !target.cloneNode) {
+		alert('ご利用のブラウザでは文字サイズと色の変更機能はご利用いただけないようです.\n[Element]or[cloneNode Method] None');
+		return;
+	}
+	//
+	var css_path = dir_path + par;
+	var newNode = target.cloneNode(true);
+	newNode.href = css_path;
+	target.parentNode.replaceChild(newNode,target);
+	//
+	setColorCookie(par);
+}
+//
+////色合いの変更　//////////////////////////////////////////////////////////////////////////////
+
+function setCookie(size,color) {
+	setFontSize(size);
+	changeCSS(color);
+}
+
+function getCookie() {
+	getSizeCookie();
+	getColorCookie();
+}
+getCookie();
+
+
+//// form
+function setParamAcc() {
+	//get
+	var s1 = (document.getElementById('size_small').checked)? document.getElementById('size_small').value : false;
+	var s2 = (document.getElementById('size_normal').checked)? document.getElementById('size_normal').value : false;
+	var s3 = (document.getElementById('size_big').checked)? document.getElementById('size_big').value : false;
+	var c1 = (document.getElementById('color1').checked)? document.getElementById('color1').value : false;
+	var c2 = (document.getElementById('color2').checked)? document.getElementById('color2').value : false;
+	var c3 = (document.getElementById('color3').checked)? document.getElementById('color3').value : false;
+	var c4 = (document.getElementById('color4').checked)? document.getElementById('color4').value : false;
+	//set
+	var size,color;
+	if(s1) size = s1;
+	if(s2) size = s2;
+	if(s3) size = s3;
+	if(c1) color = c1;
+	if(c2) color = c2;
+	if(c3) color = c3;
+	if(c4) color = c4;
+	//send
+	setCookie(size,color);
+}
+function setNormalAcc() {
+	setCookie('90%','color0.css');
+	document.getElementById('size_normal').checked = true;
+	document.getElementById('color1').checked = true;
+}
+
+
+function setFormSize(p) {
+	var s1 = document.getElementById('size_small');
+	var s2 = document.getElementById('size_normal');
+	var s3 = document.getElementById('size_big');
+	if(!s1 || !s2 || !s3) return;
+
+	switch(p) {
+		case "70%":
+			s1.checked = true;
+			break;
+		case "90%":
+			s2.checked = true;
+			break;
+		case "200%":
+			s3.checked = true;
+			break;
+		default:
+			s2.checked = true;
+			break;
+	}
+}
+
+function setFormColor(p) {
+	var c1 = document.getElementById('color1');
+	var c2 = document.getElementById('color2');
+	var c3 = document.getElementById('color3');
+	var c4 = document.getElementById('color4');
+	if(!c1 || !c2 || !c3 || !c4) return;
+	switch(p) {
+		case "color0.css":
+			c1.checked = true;
+			break;
+		case "color1.css":
+			c2.checked = true;
+			break;
+		case "color2.css":
+			c3.checked = true;
+			break;
+		case "color3.css":
+			c4.checked = true;
+			break;
+		default:
+			c1.checked = true;
+			break;
+	}
+}

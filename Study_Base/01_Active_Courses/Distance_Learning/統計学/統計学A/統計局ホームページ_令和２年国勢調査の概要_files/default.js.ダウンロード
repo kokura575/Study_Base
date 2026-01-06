@@ -1,0 +1,132 @@
+$(function () {
+    $(".menu_btn").bind('touchstart mousedown', function () {
+        if ($("#top_content").length > 0 || $("#main_contents").length > 0) {
+            //top page
+            $("#global_nav").slideToggle(0, function () {
+                $(".header_menu").slideToggle(0);
+                $("#breadcrumbs").toggleClass("hide");
+            });
+        } else {
+            //haika page
+            $("aside").slideToggle(0, function () {
+                $("#global_nav").slideToggle(0, function () {
+                    $(".header_menu").slideToggle(0);
+                    $("#breadcrumbs").toggleClass("hide");
+                });
+                //メニューの長さに合わせて、contentのtop調整
+                if ($("main").css("margin-top") == "0px") {
+                    $("main").css("margin-top", $("aside").outerHeight());
+                } else {
+                    //メニューが閉じたためtopを調整
+                    $("main").css("margin-top", 0);
+                };
+            });
+        }
+    });
+    //menu open for Tab key
+    $("#global_nav li div a").focus(function () {
+        $(".global_nav_sub").css("display", "none");
+        $(this).parent().next(".global_nav_sub").css("display", "block");
+    });
+    $("#global_nav li div a").hover(
+        function () {
+            $(".global_nav_sub").css("display", "none");
+            $(this).parent().next(".global_nav_sub").css("display", "block");
+        },
+        function () {
+        }        
+    );
+    $(".global_nav_sub li:last-child").focusout(function () {
+        $(".global_nav_sub").css("display", "none");
+    });
+    $("#header,#content,#top_content,#breadcrumbs").hover(
+        function () {
+            $(".global_nav_sub").css("display", "none");
+        },
+        function () {
+            $(this).parent().next(".global_nav_sub").css("display", "block");
+        }        
+    );
+    //閉じる
+    $("#menu_close").on({
+        'touchstart mousedown': function () {
+            this.isTouch = true;
+        },
+        'touchmove mousemove': function () {
+            this.isTouch = false;
+        },
+        'touchend mouseup': function () {
+            if (this.isTouch === true) {
+                $("#content > aside,#global_nav,.header_menu").slideUp(0);
+                $("#breadcrumbs").toggleClass("hide");
+                if ($("#top_content").length < 1) {
+                    //メニューが閉じたためtopを調整
+                    $("main").css("margin-top", 0);
+                };
+                return false; //これがないと背後要素のリンクのクリックイベントが走る
+            }
+        }
+    });
+
+    $(".global_nav_sub").prev(".nav_name").on({
+        'touchstart mousedown': function () {
+            this.isTouch = true;
+        },
+        'touchmove mousemove': function () {
+            this.isTouch = false;
+        },
+        'touchend mouseup': function () {
+            if (this.isTouch === true) {
+                $(this).next(".global_nav_sub").slideToggle(0);
+                $(this).parent("li").toggleClass("open_nav");
+                return false;
+            }
+        }
+    });
+    $(".side_menu_list").on({
+        'touchstart mousedown': function () {
+            this.isTouch = true;
+        },
+        'touchmove mousemove': function () {
+            this.isTouch = false;
+        },
+        'touchend mouseup': function () {
+            if (this.isTouch === true) {
+                $(this).toggleClass("open_side_nav");
+                $(this).children(".side_menu_sub").toggleClass("hide");
+                return false;
+            }
+        }
+    });
+    $(".index_caption").on({
+        'touchstart mousedown': function () {
+            this.isTouch = true;
+        },
+        'touchmove mousemove': function () {
+            this.isTouch = false;
+        },
+        'touchend mouseup': function () {
+            if (this.isTouch === true) {
+                $(this).toggleClass("open_index_nav");
+                $(this).closest("table").children("tbody").toggleClass("hide");
+                return false;
+            }
+        }
+    });
+    $(".smart_list").on({
+        'touchstart mousedown': function () {
+            this.isTouch = true;
+        },
+        'touchmove mousemove': function () {
+            this.isTouch = false;
+        },
+        'touchend mouseup': function () {
+            if (this.isTouch === true) {
+                $(this).toggleClass("open_article_nav");
+                $(this).parents("article , div").children("ul").toggleClass("hide");
+                return false;
+            }
+        }
+    });
+
+});
