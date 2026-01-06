@@ -90,7 +90,7 @@ def convert_md_to_html(md_path, html_path):
             line-height: 1.75;
             margin: 0;
             padding: 20px;
-            font-size: 16px;
+            font-size: 18px; /* PC default 18px */
             -webkit-text-size-adjust: 100%;
         }
         .container {
@@ -163,11 +163,11 @@ def convert_md_to_html(md_path, html_path):
         @media (max-width: 600px) {
             body {
                 padding: 0;
-                font-size: 18px; /* Larger font for mobile */
+                font-size: 22px; /* Mobile 22px */
                 background-color: #fff;
             }
             .container {
-                padding: 20px;
+                padding: 15px; /* Adjusted padding */
                 border-radius: 0;
                 box-shadow: none;
             }
@@ -191,7 +191,7 @@ def convert_md_to_html(md_path, html_path):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>経済学特講 資料要約</title>
+        <title>財政学B 資料要約</title>
         {css}
     </head>
     <body>
